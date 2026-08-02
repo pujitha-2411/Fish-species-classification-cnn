@@ -6,39 +6,61 @@
     <title>Fish Species Classification</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-      <video autoplay muted loop playsinline id="bgVideo">
-    <source src="{{ url_for('static', filename='/live.mp4') }}" type="video/mp4">
-</video>
-    <div class="container">
-       <h1 class="fish-title">🐟 FISH SPECIES CLASSIFICATION</h1>
+<body class="app-page">
+    <video autoplay muted loop playsinline id="bgVideo">
+        <source src="{{ url_for('static', filename='live.mp4') }}" type="video/mp4">
+    </video>
 
-        <div class="upload-section">
-            <input type="file" id="fileInput" accept="image/*">
-            <button onclick="predict()">Classify Fish</button>
-        </div>
-
-        <div id="loading" class="loading" style="display: none;">
-            Classifying...
-        </div>
-
-        <div id="result" class="result" style="display: none;">
-            <div class="image-container">
-                <img id="resultImage" src="" alt="Uploaded fish image">
+    <main class="container">
+        <header class="app-header">
+            <div>
+                <h1 class="fish-title">🐟 Fish Species Classification</h1>
+                <p class="subtitle">Upload a fish image to view top-3 species predictions.</p>
             </div>
-            <div class="predictions">
-                <h3>Predictions:</h3>
-                <div id="predictionList"></div>
-            </div>
-        </div>
+            <a class="logout-link" href="/logout">Logout {{ user }}</a>
+        </header>
 
-        <div id="error" class="error" style="display: none;"></div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flash-messages">
+                    {% for category, message in messages %}
+                        <li class="flash flash-{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
 
-        <div class="info">
-            <h3>Supported Fish Species:</h3>
-            <div id="classList"></div>
+        <div class="grid">
+            <section class="panel">
+                <div class="upload-section">
+                    <label class="upload-label" for="fileInput">Choose or drop an image file</label>
+                    <input type="file" id="fileInput" accept="image/*">
+                    <button onclick="predict()">Classify Fish</button>
+                </div>
+
+                <div id="loading" class="loading" style="display: none;">
+                    Classifying...
+                </div>
+
+                <div id="result" class="result" style="display: none;">
+                    <div class="image-container">
+                        <img id="resultImage" src="" alt="Uploaded fish image">
+                    </div>
+                    <div class="predictions">
+                        <h3>Predictions</h3>
+                        <div id="predictionList"></div>
+                    </div>
+                </div>
+
+                <div id="error" class="error" style="display: none;"></div>
+            </section>
+
+            <section class="panel info">
+                <h3>Supported Fish Species</h3>
+                <div id="classList" class="class-list"></div>
+            </section>
         </div>
-    </div>
+    </main>
 
     <script>
         // Load available classes on page load
@@ -158,5 +180,4 @@
         });
     </script>
 </body>
-
 </html>
