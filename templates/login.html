@@ -4,24 +4,32 @@
     <meta charset="UTF-8">
     <title>Login - Fish Classification</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body class="auth-bg auth-page">
-
+<body class="auth-page">
     <div class="container">
-        <h1>🐟 Login</h1>
+        <h1 class="fish-title">🐟 Welcome Back</h1>
+        <p class="subtitle">Sign in to classify fish species instantly.</p>
 
-        <form action="/login" method="POST">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flash-messages">
+                    {% for category, message in messages %}
+                        <li class="flash flash-{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        <form class="auth-form" action="/login" method="POST">
             <div class="form-group">
-                <label>Email</label>
-                <input type="email" name="email" required>
+                <label for="email">Email</label>
+                <input id="email" type="email" name="email" required>
             </div>
 
             <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password" required>
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password" required>
             </div>
 
             <button type="submit">Login</button>
@@ -32,6 +40,5 @@
             </p>
         </form>
     </div>
-
 </body>
 </html>
