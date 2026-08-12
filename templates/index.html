@@ -6,39 +6,47 @@
     <title>Fish Species Classification</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-      <video autoplay muted loop playsinline id="bgVideo">
-    <source src="{{ url_for('static', filename='/live.mp4') }}" type="video/mp4">
-</video>
-    <div class="container">
-       <h1 class="fish-title">🐟 FISH SPECIES CLASSIFICATION</h1>
+<body class="index-page">
+    <video autoplay muted loop playsinline id="bgVideo">
+        <source src="{{ url_for('static', filename='/live.mp4') }}" type="video/mp4">
+    </video>
 
-        <div class="upload-section">
+    <main class="container classifier-shell">
+        <header class="hero">
+            <p class="hero-kicker">Marine AI</p>
+            <h1 class="fish-title">🐟 Fish Species Classifier</h1>
+            <p class="hero-subtitle">Upload a fish image to get instant top predictions powered by our CNN model.</p>
+        </header>
+
+        <section class="upload-section">
+            <div class="upload-copy">
+                <h2>Upload fish image</h2>
+                <p>Drop an image here or choose a file to classify.</p>
+            </div>
             <input type="file" id="fileInput" accept="image/*">
-            <button onclick="predict()">Classify Fish</button>
-        </div>
+            <p id="selectedFile" class="selected-file">No image selected</p>
+            <button type="button" onclick="predict()">Classify Fish</button>
+        </section>
 
-        <div id="loading" class="loading" style="display: none;">
-            Classifying...
-        </div>
+        <div id="loading" class="loading" style="display: none;">Classifying...</div>
 
-        <div id="result" class="result" style="display: none;">
+        <section id="result" class="result" style="display: none;">
             <div class="image-container">
                 <img id="resultImage" src="" alt="Uploaded fish image">
             </div>
             <div class="predictions">
-                <h3>Predictions:</h3>
+                <h3>Top Predictions</h3>
                 <div id="predictionList"></div>
             </div>
-        </div>
+        </section>
 
         <div id="error" class="error" style="display: none;"></div>
 
-        <div class="info">
-            <h3>Supported Fish Species:</h3>
+        <section class="info">
+            <h3>Supported Fish Species</h3>
             <div id="classList"></div>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <script>
         // Load available classes on page load
@@ -118,7 +126,7 @@
                 </div>
             `).join('');
 
-            resultDiv.style.display = 'block';
+            resultDiv.style.display = 'grid';
         }
 
         function hideResult() {
@@ -138,6 +146,11 @@
         // Drag and drop functionality
         const fileInput = document.getElementById('fileInput');
         const uploadSection = document.querySelector('.upload-section');
+        const selectedFile = document.getElementById('selectedFile');
+
+        fileInput.addEventListener('change', () => {
+            selectedFile.textContent = fileInput.files.length ? fileInput.files[0].name : 'No image selected';
+        });
 
         uploadSection.addEventListener('dragover', (e) => {
             e.preventDefault();
@@ -154,9 +167,9 @@
             const files = e.dataTransfer.files;
             if (files.length > 0) {
                 fileInput.files = files;
+                selectedFile.textContent = files[0].name;
             }
         });
     </script>
 </body>
-
 </html>
